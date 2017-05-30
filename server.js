@@ -40,6 +40,7 @@ app.use(express.static(__dirname + '/public'))
    .use(cookieParser());
 
 app.get('/login', function(req, res) {
+  console.log('/login');
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
   // your application requests authorization
@@ -60,6 +61,7 @@ app.get('/callback', function(req, res) {
   var code = req.query.code || null;
   var state = req.query.state || null;
   var storedState = req.cookies ? req.cookies[stateKey] : null;
+
   if (state === null || state !== storedState) {
     res.redirect('/#' +
       querystring.stringify({
@@ -93,11 +95,13 @@ app.get('/callback', function(req, res) {
           console.log("body: ", body);
         });
         // we can also pass the token to the browser to make requests from there
-        res.redirect('/#' +
-          querystring.stringify({
-            access_token: access_token,
-            refresh_token: refresh_token
-          }));
+        // res.redirect('/underpants' +
+        //   querystring.stringify({
+        //     access_token: access_token,
+        //     refresh_token: refresh_token
+        //   }));
+
+        res.send({access_token, refresh_token}).redirect('/')
       } else {
         res.redirect('/#' +
           querystring.stringify({
@@ -107,6 +111,11 @@ app.get('/callback', function(req, res) {
     });
   }
 });
+
+
+app.get('/underpants', (request, response) => {
+  console.log(request);
+})
 
 app.get('/refresh_token', function(req, res) {
   // requesting access token from refresh token

@@ -18,31 +18,38 @@ export default class earsnakk extends Component {
   constructor(){
     super()
     this.state ={
+      user: {},
       text: 'username',
       password: 'password'
     }
   }
+
+  conditional() {
+    let keys = Object.keys(this.state.user).length
+    if(keys){
+      return (
+        <WebView source={{uri: 'http://localhost:8888/login'}} style={styles.container}>
+          <Text style={styles.welcome}>
+            Hello this is cha boiii
+          </Text>
+        </WebView>
+      )
+    } else {
+      return (
+        <WebView source={{uri: 'http://localhost:8888/callback'}} style={styles.container}>
+          <Text style={styles.welcome}>
+            Hello this is cha boiii
+          </Text>
+        </WebView>
+      )
+    }
+  }
+
   render() {
     return (
       <WebView source={{uri: 'http://localhost:8888/login'}} style={styles.container}>
         <Text style={styles.welcome}>
           Hello this is cha boiii
-        </Text>
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          onChangeText={() => this.setState({text})}
-          placeholder={this.state.text} />
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          onChangeText={() => this.setState({password})}
-          placeholder={this.state.password} />
-
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
         </Text>
       </WebView>
     );
